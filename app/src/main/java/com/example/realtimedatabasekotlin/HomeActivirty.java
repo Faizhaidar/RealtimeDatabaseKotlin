@@ -50,7 +50,7 @@ public class HomeActivirty extends AppCompatActivity {
         //this.mReadData.setOnClickListener(this::redData);
 
     }
-    // insert data on firebase 
+    // insert data on firebase
     private void runcode(View view) {
         String data = mInpurtText.getText().toString();
         mRef.setValue(data);
