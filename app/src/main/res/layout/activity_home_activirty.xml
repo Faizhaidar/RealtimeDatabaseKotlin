@@ -28,10 +28,17 @@
 
     </LinearLayout>
     <Button
+        android:id="@+id/mReadData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Read Data"
+        android:layout_above="@+id/mSubmitButton" />
+
+    <Button
         android:id="@+id/mSubmitButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ADD"
+        android:text="ADD Data"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp" />
 

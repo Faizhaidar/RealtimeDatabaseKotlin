@@ -45,7 +45,9 @@ public class HomeActivirty extends AppCompatActivity {
         mSubmitButton = findViewById(R.id.mSubmitButton);
         mOutputText = findViewById(R.id.mOutputText);
         mInpurtText = findViewById(R.id.mInpurtText);
+        mReadData = findViewById(R.id.mReadData);
         mSubmitButton.setOnClickListener(this::runcode);
+        mReadData.setOnClickListener(this::readCode);
 
         //this.mReadData.setOnClickListener(this::redData);
 
@@ -55,6 +57,21 @@ public class HomeActivirty extends AppCompatActivity {
         String data = mInpurtText.getText().toString();
         mRef.setValue(data);
         Toast.makeText(this,"Data is added",Toast.LENGTH_SHORT).show();
+    }
+
+    //read data function
+    private void readCode(View view){
+        mRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String data = snapshot.getValue(String.class);
+                mOutputText.setText(data);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
 }
