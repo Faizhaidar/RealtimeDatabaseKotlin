@@ -38,7 +38,7 @@ public class HomeActivirty extends AppCompatActivity {
         setContentView(R.layout.activity_home_activirty);
 
         mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference("users");   //  Step : 1 - path set
+        mRef = mDatabase.getReference("users");
 
         mSubmitButton = findViewById(R.id.mSubmitButton);
         mOutputText = findViewById(R.id.mOutputText);
@@ -46,20 +46,17 @@ public class HomeActivirty extends AppCompatActivity {
         mReadData = findViewById(R.id.mReadData);
         mSubmitButton.setOnClickListener(this::runcode);
         mReadData.setOnClickListener(this::readCode);
-
-        //this.mReadData.setOnClickListener(this::redData);
-
     }
     // insert data on firebase
     private void runcode(View view) {
         String data = mInpurtText.getText().toString();
-        mRef.child("user1").setValue(data);                         //Step : 2 - add child and data set
+        mRef.child("user1").setValue(data);
         Toast.makeText(this,"Data is added",Toast.LENGTH_SHORT).show();
     }
 
-    //read data function
+    // How to Create a Child Value & Read Data Once
     private void readCode(View view){
-        mRef.addValueEventListener(new ValueEventListener() {
+        mRef.child("user1").addListenerForSingleValueEvent(new ValueEventListener() {       // step : 1
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String data = snapshot.getValue(String.class);
