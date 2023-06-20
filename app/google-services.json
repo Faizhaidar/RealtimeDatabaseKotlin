@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "754969084731",
+    "project_id": "fir-prectice-405af",
+    "storage_bucket": "fir-prectice-405af.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:754969084731:android:f5fbe036d74f7f6d612d1e",
+        "android_client_info": {
+          "package_name": "com.example.realtimedatabasekotlin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "754969084731-ire3pke74ltojhl4leuiepe0uidpubr8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDK2EdTEt7ipj0tc1TGfDMhT16koo_DCBg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "754969084731-ire3pke74ltojhl4leuiepe0uidpubr8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
