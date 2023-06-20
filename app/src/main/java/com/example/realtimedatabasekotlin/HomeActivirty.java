@@ -38,9 +38,7 @@ public class HomeActivirty extends AppCompatActivity {
         setContentView(R.layout.activity_home_activirty);
 
         mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
-
-
+        mRef = mDatabase.getReference("users");   //  Step : 1 - path set
 
         mSubmitButton = findViewById(R.id.mSubmitButton);
         mOutputText = findViewById(R.id.mOutputText);
@@ -55,7 +53,7 @@ public class HomeActivirty extends AppCompatActivity {
     // insert data on firebase
     private void runcode(View view) {
         String data = mInpurtText.getText().toString();
-        mRef.setValue(data);
+        mRef.child("user1").setValue(data);                         //Step : 2 - add child and data set
         Toast.makeText(this,"Data is added",Toast.LENGTH_SHORT).show();
     }
 
