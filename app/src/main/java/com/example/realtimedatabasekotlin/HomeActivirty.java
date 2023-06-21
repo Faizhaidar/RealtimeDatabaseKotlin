@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,12 +27,13 @@ import java.util.Map;
 
 public class HomeActivirty extends AppCompatActivity {
 
-    private Button mSubmitButton,mReadData;
-    private EditText mInpurtText, mInpurtNum;
+    private Button btSubmitButton,btReadData;
+    private EditText mInpurtAge, mInpurtName;
     private TextView mOutputText;
     private FirebaseDatabase mDatabase;
-    private DatabaseReference mRef;
+    private DatabaseReference mRef,mRefnew;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,34 +41,94 @@ public class HomeActivirty extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference("users");
+        mRefnew = mDatabase.getReference("items");
 
-        mSubmitButton = findViewById(R.id.mSubmitButton);
+        btSubmitButton = findViewById(R.id.btSubmitButton);
+        btReadData = findViewById(R.id.btReadData);
+
         mOutputText = findViewById(R.id.mOutputText);
-        mInpurtText = findViewById(R.id.mInpurtText);
-        mReadData = findViewById(R.id.mReadData);
-        mSubmitButton.setOnClickListener(this::runcode);
-        mReadData.setOnClickListener(this::readCode);
-    }
-    // insert data on firebase
-    private void runcode(View view) {
-        String data = mInpurtText.getText().toString();
-        mRef.child("user1").setValue(data);
-        Toast.makeText(this,"Data is added",Toast.LENGTH_SHORT).show();
-    }
+        mInpurtName = findViewById(R.id.mInpurtName);
+        mInpurtAge = findViewById(R.id.mInpurtAge);
 
-    // How to Create a Child Value & Read Data Once
+
+        btSubmitButton.setOnClickListener(this::runcode);
+        btReadData.setOnClickListener(this::readCode);
+    }
     private void readCode(View view){
-        mRef.child("user1").addListenerForSingleValueEvent(new ValueEventListener() {       // step : 1
+        //this refrence is use a user
+        mRef.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String data = snapshot.getValue(String.class);
-                mOutputText.setText(data);
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Map<String,Object> data  = (Map<String, Object>)  snapshot.getValue();
+
             }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
-    }
 
+        //this refrence is use a item
+        mRefnew.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Map<String,Object> data  = (Map<String, Object>)  snapshot.getValue();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        }
+
+    // insert  multiple data on firebase
+    private void runcode(View view) {
+        String data = mInpurtName.getText().toString();
+        int age = Integer.parseInt(mInpurtAge.getText().toString());
+
+        Map<String,Object> insertValue =  new HashMap<>();
+        insertValue.put("ItemId",data);
+        insertValue.put("ItemsName",age);
+
+        String key = mRef.push().getKey();                      //first ref
+        mRef.child(key).setValue(insertValue);
+        Toast.makeText(this,"Data is added",Toast.LENGTH_SHORT).show();
+
+
+        String Newkey = mRefnew.push().getKey();                //second ref
+        mRefnew.child(Newkey).setValue(insertValue);
+        Toast.makeText(this,"Data is added",Toast.LENGTH_SHORT).show();
+    }
 }

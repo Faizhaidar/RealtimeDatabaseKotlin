@@ -14,10 +14,15 @@
         android:padding="10dp">
 
         <EditText
-            android:id="@+id/mInpurtText"
+            android:id="@+id/mInpurtName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:hint="Name" />
+        <EditText
+            android:id="@+id/mInpurtAge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Age" />
         <TextView
             android:id="@+id/mOutputText"
             android:layout_width="match_parent"
@@ -28,14 +33,14 @@
 
     </LinearLayout>
     <Button
-        android:id="@+id/mReadData"
+        android:id="@+id/btReadData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Read Data"
-        android:layout_above="@+id/mSubmitButton" />
+        android:layout_above="@+id/btSubmitButton" />
 
     <Button
-        android:id="@+id/mSubmitButton"
+        android:id="@+id/btSubmitButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="ADD Data"
