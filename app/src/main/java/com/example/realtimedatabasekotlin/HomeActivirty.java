@@ -1,5 +1,7 @@
 package com.example.realtimedatabasekotlin;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.LogManager;
 
 public class HomeActivirty extends AppCompatActivity {
 
@@ -31,7 +34,8 @@ public class HomeActivirty extends AppCompatActivity {
     private EditText mInpurtAge, mInpurtName;
     private TextView mOutputText;
     private FirebaseDatabase mDatabase;
-    private DatabaseReference mRef,mRefnew;
+    private DatabaseReference mRef;
+    private ChildEventListener mChildeListner;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -41,7 +45,6 @@ public class HomeActivirty extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance();
         mRef = mDatabase.getReference("users");
-        mRefnew = mDatabase.getReference("items");
 
         btSubmitButton = findViewById(R.id.btSubmitButton);
         btReadData = findViewById(R.id.btReadData);
@@ -53,82 +56,56 @@ public class HomeActivirty extends AppCompatActivity {
 
         btSubmitButton.setOnClickListener(this::runcode);
         btReadData.setOnClickListener(this::readCode);
+
+        mChildeListner = new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                //Person person = snapshot.getValue(Person.class);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        mRef.addChildEventListener(mChildeListner);
     }
+
+
     private void readCode(View view){
-        //this refrence is use a user
-        mRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Map<String,Object> data  = (Map<String, Object>)  snapshot.getValue();
-
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        //this refrence is use a item
-        mRefnew.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Map<String,Object> data  = (Map<String, Object>)  snapshot.getValue();
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
         }
 
     // insert  multiple data on firebase
     private void runcode(View view) {
-        String data = mInpurtName.getText().toString();
+        String name = mInpurtName.getText().toString();
         int age = Integer.parseInt(mInpurtAge.getText().toString());
 
-        Map<String,Object> insertValue =  new HashMap<>();
-        insertValue.put("ItemId",data);
-        insertValue.put("ItemsName",age);
-
-        String key = mRef.push().getKey();                      //first ref
-        mRef.child(key).setValue(insertValue);
-        Toast.makeText(this,"Data is added",Toast.LENGTH_SHORT).show();
-
-
-        String Newkey = mRefnew.push().getKey();                //second ref
-        mRefnew.child(Newkey).setValue(insertValue);
+        // Create new object class of Person and add a value on model class
+        Person person = new Person(name,age);
+        String key = mRef.push().getKey();
+        mRef.child(key).setValue(person);
         Toast.makeText(this,"Data is added",Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mRef.removeEventListener(mChildeListner);
+    }
+
 }
